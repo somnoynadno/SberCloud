@@ -8,6 +8,7 @@ import LoginScreen from './view/LoginScreen';
 import MainScreen from './view/MainScreen';
 import CloudEyePanel from './view/services/CloudEyePanel';
 import CloudEyeService from './view/services/CloudEyeService';
+import ApplicationOperationsPanel from './view/services/ApplicationOperationsPanel';
 
 const Stack = createStackNavigator();
 
@@ -18,8 +19,8 @@ class App extends React.Component {
                 <Stack.Navigator screenOptions={{headerShown: false}}>
                     <Stack.Screen name="Login" component={LoginScreen}/>
                     <Stack.Screen name="Main" component={MainScreen}/>
-                    <Stack.Screen name="CloudEyeService" component={CloudEyeService}/>
                     <Stack.Screen name="CloudEyePanel" component={CloudEyePanel}/>
+                    <Stack.Screen name="ApplicationOperationsPanel" component={ApplicationOperationsPanel}/>
                 </Stack.Navigator>
             </NavigationContainer>
         );

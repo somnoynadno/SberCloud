@@ -85,4 +85,40 @@ export class API {
                 .catch(error => reject(error));
         });
     }
+
+    CloudContainerEngineClusters(projectID) {
+        return new Promise((resolve, reject) => {
+            this.api.post(`/cce/clusters/overview`, {'project_id': projectID})
+                .then(response => resolve(response.data))
+                .catch(error => reject(error));
+        });
+    }
+
+    ApplicationOperationsMetricList(clusterName, projectID) {
+        return new Promise((resolve, reject) => {
+            this.api.post(`/aom/metric_list`,
+                {
+                    'cluster_name': clusterName,
+                    'project_id': projectID,
+                },
+            )
+                .then(response => resolve(response.data))
+                .catch(error => reject(error));
+        });
+    }
+
+    ApplicationOperationsQuery(projectID, clusterName, namespace, metric) {
+        return new Promise((resolve, reject) => {
+            this.api.post(`/aom/query`,
+                {
+                    'project_id': projectID,
+                    'cluster_name': clusterName,
+                    'metric_name': metric,
+                    'namespace': namespace,
+                },
+            )
+                .then(response => resolve(response.data))
+                .catch(error => reject(error));
+        });
+    }
 }

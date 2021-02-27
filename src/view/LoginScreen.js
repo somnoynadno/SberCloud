@@ -45,7 +45,7 @@ class LoginScreen extends React.Component {
 
                 this.props.navigation.push('Main');
             }).catch((err) => {
-                console.log(err.response.data)
+                console.log(err.response.data);
                 this.setState({errorMessage: "Invalid credentials"});
                 this.showErrorDialog();
             });
