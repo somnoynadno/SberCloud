@@ -3,18 +3,24 @@ import {StyleSheet, View} from 'react-native';
 import {API} from '../http/API';
 import MainMenu from './components/MainMenu';
 
-import CES from '../assets/icons/CES.png';
-import AOM from '../assets/icons/AOM.png';
-import APM from '../assets/icons/APM.png';
-import CTS from '../assets/icons/CTS.png';
+import CES from '../assets/icons/CES';
+import AOM from '../assets/icons/AOM';
+import APM from '../assets/icons/APM';
+import CTS from '../assets/icons/CTS';
+
+import CES_active from '../assets/icons/CES_active';
+import AOM_active from '../assets/icons/AOM_active';
+import APM_active from '../assets/icons/APM_active';
+import CTS_active from '../assets/icons/CTS_active';
+
 import CloudEyeService from './services/CloudEyeService';
 
 
 const services = [
-    {source: CES, name: 'CES'},
-    {source: AOM, name: 'AOM'},
-    {source: APM, name: 'APM'},
-    {source: CTS, name: 'CTS'},
+    {component: CES(), active: CES_active(), name: 'CES'},
+    {component: AOM(), active: AOM_active(), name: 'AOM'},
+    {component: APM(), active: APM_active(), name: 'APM'},
+    {component: CTS(), active: CTS_active(), name: 'CTS'},
 ];
 
 class MainScreen extends React.Component {
@@ -29,6 +35,9 @@ class MainScreen extends React.Component {
             services: services,
             selectedService: services[0],
         };
+
+        this.selectProject.bind(this);
+        this.selectService.bind(this);
     }
 
     componentDidMount = async () => {
@@ -50,7 +59,8 @@ class MainScreen extends React.Component {
 
     selectService = (i) => {
         console.log("changing service");
-        this.setState({selectedService: this.state.services[i]});
+        console.log(i, services[i]);
+        this.setState({selectedService: services[i]});
     };
 
     render() {
@@ -61,8 +71,17 @@ class MainScreen extends React.Component {
                 case "CES":
                     service = <CloudEyeService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
                     break
+                case "CTS":
+                    service = <CloudEyeService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
+                    break
+                case "APM":
+                    service = <CloudEyeService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
+                    break
+                case "AOM":
+                    service = <CloudEyeService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
+                    break
                 default:
-                    service = <CloudEyeService selectedProject={this.state.selectedProject}/>
+                    service = <CloudEyeService selectedProject={this.state.selectedProject} selectedProject={this.state.selectedProject}/>
             }
         }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {Surface, Title} from 'react-native-paper';
+import {Surface, Title, Subheading} from 'react-native-paper';
 import {API} from '../../http/API';
 import PropTypes from 'prop-types';
 import CloudEyePanel from './CloudEyePanel';
@@ -65,7 +65,7 @@ class CloudEyeService extends React.Component {
                         this.state.namespaces.map((item, i) => {
                             return <Surface key={'s-' + i} style={styles.item}>
                                 <TouchableOpacity onPress={() => this.goToPanel(item)}>
-                                    <Title>{item.name}</Title>
+                                    <Subheading>{item.name}</Subheading>
                                 </TouchableOpacity>
                             </Surface>;
                         })
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 10,
         borderRadius: 20,
-        height: 60,
+        height: 52,
     },
 });
 

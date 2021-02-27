@@ -2,6 +2,7 @@ import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import PropTypes from 'prop-types';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 class MainMenu extends React.Component {
     constructor(props) {
@@ -35,8 +36,10 @@ class MainMenu extends React.Component {
                 <View style={styles.menu}>
                     {
                         this.props.services.map((s, i) => {
-                            return <Image onClick={(i) => this.props.selectServiceCallback(i)}
-                                          style={styles.menuItem} source={s.source} key={i}/>;
+                            return <TouchableOpacity onPress={() => this.props.selectServiceCallback(i)}
+                                          style={styles.menuItem} key={i}>
+                                {s.name === this.props.selectedService.name ? s.active : s.component}
+                            </TouchableOpacity>
                         })
                     }
                 </View>
