@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Text, Dialog, Portal , DataTable, IconButton, Title} from 'react-native-paper';
+import {Button, DataTable, Dialog, IconButton, Portal, Text, Title} from 'react-native-paper';
 import {API} from '../../http/API';
 import PropTypes from 'prop-types';
 import {colors} from '../../style/colors';
@@ -15,7 +15,7 @@ class CloudTraceService extends React.Component {
         this.state = {
             events: [],
             showDetails: false,
-            details: "",
+            details: '',
         };
     }
 
@@ -39,17 +39,17 @@ class CloudTraceService extends React.Component {
     };
 
     getDetails = async (traceID) => {
-        this.setState({details: ""});
+        this.setState({details: ''});
         await this.api.CloudTraceDetails(this.props.selectedProject.id, traceID)
             .then((resp) => {
                 console.log(resp);
-                this.setState({details: resp});
+                this.setState({details: JSON.stringify(resp)});
             })
             .catch((err) => {
                 console.log(err.response.data);
-            })
+            });
         this.showDialog();
-    }
+    };
 
     showDialog = () => this.setState({showDetails: true});
 
@@ -60,10 +60,12 @@ class CloudTraceService extends React.Component {
             <View style={styles.container}>
                 <Title>Cloud Trace Service</Title>
                 <Portal>
-                    <Dialog visible={this.state.showDetails} onDismiss={this.hideDialog}>
+                    <Dialog style={styles.modal} visible={this.state.showDetails} onDismiss={this.hideDialog}>
                         <Dialog.Title>Details</Dialog.Title>
                         <Dialog.Content>
-                            <Text>{this.state.details}</Text>
+                            <ScrollView>
+                                <Text>{this.state.details}</Text>
+                            </ScrollView>
                         </Dialog.Content>
                         <Dialog.Actions>
                             <Button onPress={this.hideDialog}>Close</Button>
@@ -81,16 +83,16 @@ class CloudTraceService extends React.Component {
                         </DataTable.Header>
 
                         {this.state.events.map((e, i) => {
-                            return <DataTable.Row key={"tr-" + i}>
+                            return <DataTable.Row key={'tr-' + i}>
                                 <DataTable.Cell>{e['Trace Name']}</DataTable.Cell>
                                 <DataTable.Cell>{e['Resource Type']}</DataTable.Cell>
                                 <DataTable.Cell>{e['Trace Status']}</DataTable.Cell>
-                                <DataTable.Cell>{moment(e['Operation Time']).format("MM:HH")}</DataTable.Cell>
+                                <DataTable.Cell>{moment(e['Operation Time']).format('MM:HH')}</DataTable.Cell>
                                 <DataTable.Cell>{<IconButton
                                     icon="eye"
                                     color={colors.green}
                                     size={20}
-                                    onPress={() => this.getDetails(e["Id"])}
+                                    onPress={() => this.getDetails(e['Id'])}
                                 />}</DataTable.Cell>
                             </DataTable.Row>;
                         })}
@@ -111,5 +113,8 @@ const styles = StyleSheet.create({
     container: {
         padding: 10,
     },
+    modal: {
+        marginBottom: 40,
+    }
 });
 
