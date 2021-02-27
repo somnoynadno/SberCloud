@@ -38,7 +38,6 @@ class ApplicationOperationsManagement extends React.Component {
                     let i = 0;
                     for (let d of data) {
                         if (d['metrics']) {
-                            console.log(d['metrics']);
                             let ns = [];
                             for (let m of d['metrics']) {
                                 const e = {name: m['namespace']};
@@ -52,7 +51,6 @@ class ApplicationOperationsManagement extends React.Component {
                         ++i;
                     }
 
-                    console.log(clusters);
                     this.setState({clusters});
                 });
             })
@@ -79,7 +77,7 @@ class ApplicationOperationsManagement extends React.Component {
                             <Subheading style={styles.subheading} key={i}>{`Cluster "${c.name}"`}</Subheading>
                             <Divider/>
                             {c['namespaces'].map((ns, j) => {
-                                return <TouchableOpacity onPress={() => this.goToPanel(ns, c) }>
+                                return <TouchableOpacity onPress={() => this.goToPanel(ns, c)}>
                                     <Text style={styles.namespace} key={'ns-' + j}>{ns.name}</Text>
                                 </TouchableOpacity>;
                             })}
@@ -111,6 +109,6 @@ const styles = StyleSheet.create({
     },
     subheading: {
         color: colors.darkGreen,
-    }
+    },
 });
 

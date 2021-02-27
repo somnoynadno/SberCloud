@@ -40,7 +40,7 @@ class CloudEyePanel extends React.Component {
             }
             this.setState({data: values});
         });
-    }
+    };
 
     render() {
         return (
@@ -52,7 +52,7 @@ class CloudEyePanel extends React.Component {
                     <Picker
                         style={styles.picker}
                         selectedValue={this.state.interval}
-                        onValueChange={async (itemValue, itemIndex) =>{
+                        onValueChange={async (itemValue, itemIndex) => {
                             await this.setState({interval: itemValue});
                             await this.getMetrics();
                         }
@@ -76,7 +76,7 @@ class CloudEyePanel extends React.Component {
                             let j = 0;
                             for (let e of d['datapoints']) {
                                 labels.push(j++);
-                                times.push(moment(e['timestamp']))
+                                times.push(moment(e['timestamp']));
                                 data.push(e['average']);
                             }
 
@@ -114,7 +114,7 @@ class CloudEyePanel extends React.Component {
                                         borderRadius: 16,
                                     }}
                                     onDataPointClick={(e) => {
-                                        this.toast.show(`${data[e.index]} (${times[e.index].format("LLL")})`, DURATION.SHORT);
+                                        this.toast.show(`${data[e.index]} (${times[e.index].format('LLL')})`, DURATION.SHORT);
                                     }}
                                 />
                             </View>;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {Surface, Title, Subheading} from 'react-native-paper';
+import {Subheading, Surface, Title} from 'react-native-paper';
 import {API} from '../../http/API';
 import PropTypes from 'prop-types';
 import CloudEyePanel from './CloudEyePanel';
@@ -29,7 +29,6 @@ class CloudEyeService extends React.Component {
     setMetricList = (projectID) => {
         return this.api.CloudEyeMetricList(projectID)
             .then((resp) => {
-                console.log(resp);
                 if (resp['metrics']) {
                     let ns = [];
                     for (let elem of resp['metrics']) {

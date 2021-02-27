@@ -25,7 +25,7 @@ class ApplicationOperationsPanel extends React.Component {
         const {name, selectedProject, cluster} = this.props.route.params;
         let data = [];
         let names = [];
-        for (let m of cluster["metrics"]) {
+        for (let m of cluster['metrics']) {
             if (m.namespace === name) {
                 data.push(this.api.ApplicationOperationsQuery(selectedProject.id, cluster.name, name, m['metricName']));
                 names.push(m['metricName']);

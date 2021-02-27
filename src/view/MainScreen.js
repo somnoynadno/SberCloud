@@ -38,14 +38,10 @@ class MainScreen extends React.Component {
             services: services,
             selectedService: services[0],
         };
-
-        this.selectProject.bind(this);
-        this.selectService.bind(this);
     }
 
     componentDidMount = async () => {
         this.api.Projects().then((resp) => {
-            console.log(resp);
             this.setState({
                 projects: resp['response'],
                 selectedProject: resp['response'][0],
@@ -56,12 +52,10 @@ class MainScreen extends React.Component {
     };
 
     selectProject = (i) => {
-        console.log("changing project");
         this.setState({selectedProject: this.state.projects[i]});
     };
 
     selectService = (i) => {
-        console.log("changing service");
         this.setState({selectedService: services[i]});
     };
 
@@ -70,20 +64,25 @@ class MainScreen extends React.Component {
 
         if (this.state.selectedProject) {
             switch (this.state.selectedService.name) {
-                case "CES":
-                    service = <CloudEyeService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
-                    break
-                case "CTS":
-                    service = <CloudTraceService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
-                    break
-                case "APM":
-                    service = <ApplicationPerformanceManagement navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
-                    break
-                case "AOM":
-                    service = <ApplicationOperationsManagement navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
-                    break
+                case 'CES':
+                    service = <CloudEyeService navigation={this.props.navigation}
+                                               selectedProject={this.state.selectedProject}/>;
+                    break;
+                case 'CTS':
+                    service = <CloudTraceService navigation={this.props.navigation}
+                                                 selectedProject={this.state.selectedProject}/>;
+                    break;
+                case 'APM':
+                    service = <ApplicationPerformanceManagement navigation={this.props.navigation}
+                                                                selectedProject={this.state.selectedProject}/>;
+                    break;
+                case 'AOM':
+                    service = <ApplicationOperationsManagement navigation={this.props.navigation}
+                                                               selectedProject={this.state.selectedProject}/>;
+                    break;
                 default:
-                    service = <CloudEyeService navigation={this.props.navigation}  selectedProject={this.state.selectedProject}/>
+                    service = <CloudEyeService navigation={this.props.navigation}
+                                               selectedProject={this.state.selectedProject}/>;
             }
         }
 
@@ -105,7 +104,7 @@ export default MainScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
-    }
+        flex: 1,
+    },
 });
 

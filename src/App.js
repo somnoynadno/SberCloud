@@ -7,7 +7,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from './view/LoginScreen';
 import MainScreen from './view/MainScreen';
 import CloudEyePanel from './view/services/CloudEyePanel';
-import CloudEyeService from './view/services/CloudEyeService';
 import ApplicationOperationsPanel from './view/services/ApplicationOperationsPanel';
 
 const Stack = createStackNavigator();

@@ -33,7 +33,6 @@ class CloudTraceService extends React.Component {
     setEventList = (projectID) => {
         return this.api.CloudTraceQuery(projectID, this.state.interval)
             .then((resp) => {
-                console.log(resp);
                 this.setState({events: resp});
             }).catch((err) => {
                 console.log(err.response.data);
@@ -45,7 +44,6 @@ class CloudTraceService extends React.Component {
         this.setState({details: ''});
         await this.api.CloudTraceDetails(this.props.selectedProject.id, traceID, this.state.interval)
             .then((resp) => {
-                console.log(resp);
                 this.setState({details: JSON.stringify(resp)});
             })
             .catch((err) => {

@@ -16,7 +16,7 @@ class LoginScreen extends React.Component {
             username: '',
             password: '',
             errorModalVisible: false,
-            errorMessage: 'Unknown error'
+            errorMessage: 'Unknown error',
         };
     }
 
@@ -25,7 +25,7 @@ class LoginScreen extends React.Component {
         if (t) {
             this.props.navigation.replace('Main');
         }
-    }
+    };
 
     onLogin = async () => {
         const {username, password} = this.state;
@@ -33,20 +33,20 @@ class LoginScreen extends React.Component {
 
         await api.Login(username, password)
             .then(async (resp) => {
-                console.log(resp);
                 try {
-                    await AsyncStorage.setItem('@token', resp["srv_token"]);
+                    await AsyncStorage.setItem('@token', resp['srv_token']);
                 } catch (e) {
                     console.log(e);
-                    await AsyncStorage.setItem('@token', "");
-                    this.setState({errorMessage: "Fatal error, try again later"});
+                    await AsyncStorage.setItem('@token', '');
+                    this.setState({errorMessage: 'Fatal error, try again later'});
                     this.showErrorDialog();
                 }
 
                 this.props.navigation.push('Main');
-            }).catch((err) => {
+            }).catch(async (err) => {
                 console.log(err.response.data);
-                this.setState({errorMessage: "Invalid credentials"});
+                this.setState({errorMessage: 'Invalid credentials'});
+                await AsyncStorage.setItem('@token', '');
                 this.showErrorDialog();
             });
     };
