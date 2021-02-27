@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Paragraph, Dialog, Portal , DataTable, IconButton, Title} from 'react-native-paper';
+import {Button, Text, Dialog, Portal , DataTable, IconButton, Title} from 'react-native-paper';
 import {API} from '../../http/API';
 import PropTypes from 'prop-types';
 import {colors} from '../../style/colors';
@@ -63,7 +63,7 @@ class CloudTraceService extends React.Component {
                     <Dialog visible={this.state.showDetails} onDismiss={this.hideDialog}>
                         <Dialog.Title>Details</Dialog.Title>
                         <Dialog.Content>
-                            <Paragraph>{this.state.details}</Paragraph>
+                            <Text>{this.state.details}</Text>
                         </Dialog.Content>
                         <Dialog.Actions>
                             <Button onPress={this.hideDialog}>Close</Button>
@@ -81,7 +81,7 @@ class CloudTraceService extends React.Component {
                         </DataTable.Header>
 
                         {this.state.events.map((e, i) => {
-                            return <DataTable.Row kye={"tr-" + i}>
+                            return <DataTable.Row key={"tr-" + i}>
                                 <DataTable.Cell>{e['Trace Name']}</DataTable.Cell>
                                 <DataTable.Cell>{e['Resource Type']}</DataTable.Cell>
                                 <DataTable.Cell>{e['Trace Status']}</DataTable.Cell>
