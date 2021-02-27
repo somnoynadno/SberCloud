@@ -14,6 +14,7 @@ import APM_active from '../assets/icons/APM_active';
 import CTS_active from '../assets/icons/CTS_active';
 
 import CloudEyeService from './services/CloudEyeService';
+import CloudTraceService from './services/CloudTraceService';
 
 
 const services = [
@@ -72,7 +73,7 @@ class MainScreen extends React.Component {
                     service = <CloudEyeService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
                     break
                 case "CTS":
-                    service = <CloudEyeService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
+                    service = <CloudTraceService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
                     break
                 case "APM":
                     service = <CloudEyeService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>

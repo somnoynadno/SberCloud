@@ -41,6 +41,7 @@ class CloudEyePanel extends React.Component {
                 <Title>
                     {this.props.route.params.name}
                 </Title>
+                {/* TODO: change time periods */}
                 <ActivityIndicator animating={this.state.data === []} color={colors.green} />
                 <ScrollView>
                     {this.state.data.map((d, i) => {

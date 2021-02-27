@@ -58,4 +58,31 @@ export class API {
                 .catch(error => reject(error));
         });
     }
+
+    CloudTraceQuery(projectID, duration = 60 * 60 * 24) {
+        return new Promise((resolve, reject) => {
+            this.api.post(`/cts/overview`,
+                {
+                    'project_id': projectID,
+                    'duration_sec': duration,
+                },
+            )
+                .then(response => resolve(response.data))
+                .catch(error => reject(error));
+        });
+    }
+
+    CloudTraceDetails(projectID, traceID, duration = 60 * 60 * 24) {
+        return new Promise((resolve, reject) => {
+            this.api.post(`/cts/detail`,
+                {
+                    'project_id': projectID,
+                    'trace_id': traceID,
+                    'duration_sec': duration,
+                },
+            )
+                .then(response => resolve(response.data))
+                .catch(error => reject(error));
+        });
+    }
 }
