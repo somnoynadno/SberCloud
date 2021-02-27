@@ -4,11 +4,23 @@ React Native application for SberCloud infrastructure monitoring
 
 ## Start developer version
 
-TODO
+### Android
+
+1. ``` $ react-native start```
+
+2. ``` $ react-native run-android```
+
+### IOS
+
+1. ``` $ react-native start```
+
+2. ``` $ react-native run-ios```
 
 ## Download existing binary
 
-TODO
+Get latest APK here: https://somnoynadno.ru/static/sbercode
+
+*P.S. Never tested on iOS*
 
 ## Troubleshooting
 

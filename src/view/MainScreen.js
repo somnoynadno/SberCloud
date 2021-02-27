@@ -62,7 +62,6 @@ class MainScreen extends React.Component {
 
     selectService = (i) => {
         console.log("changing service");
-        console.log(i, services[i]);
         this.setState({selectedService: services[i]});
     };
 
@@ -84,7 +83,7 @@ class MainScreen extends React.Component {
                     service = <ApplicationOperationsManagement navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
                     break
                 default:
-                    service = <CloudEyeService selectedProject={this.state.selectedProject} selectedProject={this.state.selectedProject}/>
+                    service = <CloudEyeService navigation={this.props.navigation}  selectedProject={this.state.selectedProject}/>
             }
         }
 
