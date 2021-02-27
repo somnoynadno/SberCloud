@@ -1,10 +1,12 @@
 import React from 'react';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Button, Dialog, Portal, Surface, Text, TextInput} from 'react-native-paper';
 import {Image, ImageBackground, StyleSheet, View} from 'react-native';
 import background from '../assets/backround.png';
 import logo from '../assets/logo_white.png';
 import {colors} from '../style/colors';
-import {cloudEyeAPI} from '../api/CloudEyeAPI';
+import {API} from '../http/API';
 
 class LoginScreen extends React.Component {
     constructor(props) {
@@ -14,16 +16,37 @@ class LoginScreen extends React.Component {
             username: '',
             password: '',
             errorModalVisible: false,
+            errorMessage: 'Unknown error'
         };
+    }
+
+    componentDidMount = async () => {
+        const t = await AsyncStorage.getItem('@token');
+        if (t) {
+            this.props.navigation.replace('Main');
+        }
     }
 
     onLogin = async () => {
         const {username, password} = this.state;
-        await cloudEyeAPI.Login(username, password)
-            .then((resp) => {
+        const api = new API();
+
+        await api.Login(username, password)
+            .then(async (resp) => {
                 console.log(resp);
+                try {
+                    await AsyncStorage.setItem('@token', resp["srv_token"]);
+                } catch (e) {
+                    console.log(e);
+                    await AsyncStorage.setItem('@token', "");
+                    this.setState({errorMessage: "Fatal error, try again later"});
+                    this.showErrorDialog();
+                }
+
+                this.props.navigation.push('Main');
             }).catch((err) => {
-                console.log(err);
+                console.log(err.response.data)
+                this.setState({errorMessage: "Invalid credentials"});
                 this.showErrorDialog();
             });
     };
@@ -38,7 +61,7 @@ class LoginScreen extends React.Component {
                     <Dialog visible={this.state.errorModalVisible} onDismiss={this.hideErrorDialog}>
                         <Dialog.Title>Error</Dialog.Title>
                         <Dialog.Content>
-                            <Text>Invalid credentials</Text>
+                            <Text>{this.state.errorMessage}</Text>
                         </Dialog.Content>
                         <Dialog.Actions>
                             <Button onPress={this.hideErrorDialog}>OK</Button>
