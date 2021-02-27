@@ -81,7 +81,7 @@ class CloudTraceService extends React.Component {
                         </DataTable.Header>
 
                         {this.state.events.map((e, i) => {
-                            return <DataTable.Row>
+                            return <DataTable.Row kye={"tr-" + i}>
                                 <DataTable.Cell>{e['Trace Name']}</DataTable.Cell>
                                 <DataTable.Cell>{e['Resource Type']}</DataTable.Cell>
                                 <DataTable.Cell>{e['Trace Status']}</DataTable.Cell>
@@ -110,13 +110,6 @@ export default CloudTraceService;
 const styles = StyleSheet.create({
     container: {
         padding: 10,
-    },
-    item: {
-        width: 'auto',
-        margin: 10,
-        padding: 10,
-        borderRadius: 20,
-        height: 52,
     },
 });
 

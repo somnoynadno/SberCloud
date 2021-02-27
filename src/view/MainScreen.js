@@ -15,6 +15,8 @@ import CTS_active from '../assets/icons/CTS_active';
 
 import CloudEyeService from './services/CloudEyeService';
 import CloudTraceService from './services/CloudTraceService';
+import ApplicationPerformanceManagement from './services/ApplicationPerformanceManagement';
+import ApplicationOperationsManagement from './services/ApplicationOperationsManagement';
 
 
 const services = [
@@ -76,10 +78,10 @@ class MainScreen extends React.Component {
                     service = <CloudTraceService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
                     break
                 case "APM":
-                    service = <CloudEyeService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
+                    service = <ApplicationPerformanceManagement navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
                     break
                 case "AOM":
-                    service = <CloudEyeService navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
+                    service = <ApplicationOperationsManagement navigation={this.props.navigation} selectedProject={this.state.selectedProject}/>
                     break
                 default:
                     service = <CloudEyeService selectedProject={this.state.selectedProject} selectedProject={this.state.selectedProject}/>
