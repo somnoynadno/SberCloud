@@ -68,12 +68,11 @@ const styles = StyleSheet.create({
         minHeight: 70,
     },
     picker: {
-        width: 150,
+        width: 170,
     },
     menu: {
         flex: 1,
         flexDirection: 'row',
-        marginLeft: '10%',
     },
     menuItem: {
         margin: 8,

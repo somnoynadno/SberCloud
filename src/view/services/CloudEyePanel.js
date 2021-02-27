@@ -5,7 +5,9 @@ import {API} from '../../http/API';
 import {LineChart} from 'react-native-chart-kit';
 import {colors} from '../../style/colors';
 import moment from 'moment';
-import Toast, {DURATION} from 'react-native-easy-toast'
+import Toast, {DURATION} from 'react-native-easy-toast';
+import {Picker} from '@react-native-picker/picker';
+import {availableTimeIntervals} from '../../config';
 
 class CloudEyePanel extends React.Component {
     constructor(props) {
@@ -14,17 +16,22 @@ class CloudEyePanel extends React.Component {
         this.api = new API();
         this.state = {
             data: [],
+            interval: 60 * 60,
         };
     }
 
     componentDidMount = async () => {
+        await this.getMetrics();
+    };
+
+    getMetrics = async () => {
         const {metricList, namespace, selectedProject} = this.props.route.params;
         let data = [];
         let names = [];
         for (let m of metricList) {
             if (m.id === namespace) {
-                data.push(this.api.CloudEyeQuery(selectedProject.id, namespace, m['metric_name']));
-                names.push(m['metric_name'])
+                data.push(this.api.CloudEyeQuery(selectedProject.id, namespace, m['metric_name'], this.state.interval));
+                names.push(m['metric_name']);
             }
         }
         Promise.all(data).then(values => {
@@ -32,25 +39,44 @@ class CloudEyePanel extends React.Component {
                 values[i]['metric'] = names[i];
             }
             this.setState({data: values});
-        })
-    };
+        });
+    }
 
     render() {
         return (
             <View style={styles.container}>
-                <Title>
-                    {this.props.route.params.name}
-                </Title>
-                {/* TODO: change time periods */}
-                <ActivityIndicator animating={this.state.data === []} color={colors.green} />
+                <View style={styles.header}>
+                    <Title>
+                        {this.props.route.params.name}
+                    </Title>
+                    <Picker
+                        style={styles.picker}
+                        selectedValue={this.state.interval}
+                        onValueChange={async (itemValue, itemIndex) =>{
+                            await this.setState({interval: itemValue});
+                            await this.getMetrics();
+                        }
+                        }>
+                        {
+                            availableTimeIntervals.map((elem, i) => {
+                                return <Picker.Item key={i} label={elem.label} value={elem.value}/>;
+                            })
+                        }
+                    </Picker>
+                </View>
+                <ActivityIndicator animating={this.state.data === []} color={colors.green}/>
                 <ScrollView>
                     {this.state.data.map((d, i) => {
                         if (d['datapoints'].length > 0) {
                             let labels = [];
+                            let times = [];
                             let data = [];
                             let unit = d['datapoints'][0]['unit'];
+
+                            let j = 0;
                             for (let e of d['datapoints']) {
-                                labels.push(moment(e['timestamp']).format("hh:mm"));
+                                labels.push(j++);
+                                times.push(moment(e['timestamp']))
                                 data.push(e['average']);
                             }
 
@@ -70,8 +96,8 @@ class CloudEyePanel extends React.Component {
                                     chartConfig={{
                                         backgroundColor: colors.white,
                                         backgroundGradientFrom: colors.white,
-                                        backgroundGradientTo: "#fafafa",
-                                        color: (opacity) => colors.darkGreen + "88",
+                                        backgroundGradientTo: '#fafafa',
+                                        color: (opacity) => colors.darkGreen + '88',
                                         labelColor: (opacity) => colors.black,
                                         style: {
                                             borderRadius: 16,
@@ -88,12 +114,13 @@ class CloudEyePanel extends React.Component {
                                         borderRadius: 16,
                                     }}
                                     onDataPointClick={(e) => {
-                                        this.toast.show(`${data[e.index]} (${labels[e.index]})`, DURATION.SHORT);
+                                        this.toast.show(`${data[e.index]} (${times[e.index].format("LLL")})`, DURATION.SHORT);
                                     }}
-
                                 />
-                            </View>
-                        } else return <Subheading>No data for this period</Subheading>
+                            </View>;
+                        } else {
+                            return <Subheading>No data for this period</Subheading>;
+                        }
                     })}
                 </ScrollView>
                 <Toast
@@ -112,6 +139,16 @@ export default CloudEyePanel;
 const styles = StyleSheet.create({
     container: {
         padding: 20,
+    },
+    header: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        minHeight: 50,
+        alignItems: 'center',
+    },
+    picker: {
+        width: 100,
     },
 });
 

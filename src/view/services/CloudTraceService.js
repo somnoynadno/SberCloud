@@ -5,6 +5,8 @@ import {API} from '../../http/API';
 import PropTypes from 'prop-types';
 import {colors} from '../../style/colors';
 import moment from 'moment';
+import {Picker} from '@react-native-picker/picker';
+import {availableTimeIntervals} from '../../config';
 
 class CloudTraceService extends React.Component {
     constructor(props) {
@@ -16,6 +18,7 @@ class CloudTraceService extends React.Component {
             events: [],
             showDetails: false,
             details: '',
+            interval: 60 * 60,
         };
     }
 
@@ -28,7 +31,7 @@ class CloudTraceService extends React.Component {
     };
 
     setEventList = (projectID) => {
-        return this.api.CloudTraceQuery(projectID)
+        return this.api.CloudTraceQuery(projectID, this.state.interval)
             .then((resp) => {
                 console.log(resp);
                 this.setState({events: resp});
@@ -40,7 +43,7 @@ class CloudTraceService extends React.Component {
 
     getDetails = async (traceID) => {
         this.setState({details: ''});
-        await this.api.CloudTraceDetails(this.props.selectedProject.id, traceID)
+        await this.api.CloudTraceDetails(this.props.selectedProject.id, traceID, this.state.interval)
             .then((resp) => {
                 console.log(resp);
                 this.setState({details: JSON.stringify(resp)});
@@ -58,7 +61,23 @@ class CloudTraceService extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Title>Cloud Trace Service</Title>
+                <View style={styles.header}>
+                    <Title>Cloud Trace Service</Title>
+                    <Picker
+                        style={styles.picker}
+                        selectedValue={this.state.interval}
+                        onValueChange={async (itemValue, itemIndex) => {
+                            await this.setState({interval: itemValue});
+                            await this.setEventList(this.props.selectedProject.id);
+                        }
+                        }>
+                        {
+                            availableTimeIntervals.map((elem, i) => {
+                                return <Picker.Item key={i} label={elem.label} value={elem.value}/>;
+                            })
+                        }
+                    </Picker>
+                </View>
                 <Portal>
                     <Dialog style={styles.modal} visible={this.state.showDetails} onDismiss={this.hideDialog}>
                         <Dialog.Title>Details</Dialog.Title>
@@ -113,8 +132,19 @@ const styles = StyleSheet.create({
     container: {
         padding: 10,
     },
+    header: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        minHeight: 50,
+        alignItems: 'center',
+    },
+    picker: {
+        width: 100,
+        alignSelf: 'flex-end',
+    },
     modal: {
         marginBottom: 40,
-    }
+    },
 });
 
