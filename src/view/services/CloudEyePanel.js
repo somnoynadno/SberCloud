@@ -17,6 +17,7 @@ class CloudEyePanel extends React.Component {
         this.state = {
             data: [],
             interval: 60 * 60,
+            loading: false,
         };
     }
 
@@ -25,6 +26,7 @@ class CloudEyePanel extends React.Component {
     };
 
     getMetrics = async () => {
+        this.setState({loading: true});
         const {metricList, namespace, selectedProject} = this.props.route.params;
         let data = [];
         let names = [];
@@ -38,7 +40,7 @@ class CloudEyePanel extends React.Component {
             for (let i = 0; i < values.length; i++) {
                 values[i]['metric'] = names[i];
             }
-            this.setState({data: values});
+            this.setState({data: values, loading: false});
         });
     };
 
@@ -64,7 +66,7 @@ class CloudEyePanel extends React.Component {
                         }
                     </Picker>
                 </View>
-                <ActivityIndicator animating={this.state.data === []} color={colors.green}/>
+                <ActivityIndicator animating={this.state.loading} color={colors.green}/>
                 <ScrollView>
                     {this.state.data.map((d, i) => {
                         if (d['datapoints'].length > 0) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dimensions, ScrollView, StyleSheet, View} from 'react-native';
-import {Subheading, Title} from 'react-native-paper';
+import {ActivityIndicator, Subheading, Title} from 'react-native-paper';
 import {API} from '../../http/API';
 import {LineChart} from 'react-native-chart-kit';
 import {colors} from '../../style/colors';
@@ -14,6 +14,7 @@ class ApplicationOperationsPanel extends React.Component {
         this.api = new API();
         this.state = {
             data: [],
+            loading: false,
         };
     }
 
@@ -22,6 +23,7 @@ class ApplicationOperationsPanel extends React.Component {
     };
 
     getMetrics = async () => {
+        this.setState({loading: true});
         const {name, selectedProject, cluster} = this.props.route.params;
         let data = [];
         let names = [];
@@ -35,7 +37,7 @@ class ApplicationOperationsPanel extends React.Component {
             for (let i = 0; i < values.length; i++) {
                 values[i]['metric'] = names[i];
             }
-            this.setState({data: values});
+            this.setState({data: values, loading: false});
         });
     };
 
@@ -46,6 +48,7 @@ class ApplicationOperationsPanel extends React.Component {
                     {this.props.route.params.name}
                 </Title>
 
+                <ActivityIndicator animating={this.state.loading} color={colors.green}/>
                 <ScrollView>
                     {this.state.data.map((d, i) => {
                         if (d['points'].length > 0) {

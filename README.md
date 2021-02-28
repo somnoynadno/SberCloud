@@ -18,7 +18,7 @@ React Native application for SberCloud infrastructure monitoring
 
 ## Download existing binary
 
-Get latest APK here: http://somnoynadno.ru/static/sbercode
+Get latest APK here: http://somnoynadno.ru/static/sbercode/android
 
 *P.S. Never tested on iOS*
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {Button, DataTable, Dialog, IconButton, Portal, Text, Title} from 'react-native-paper';
+import {ActivityIndicator, Button, DataTable, Dialog, IconButton, Portal, Text, Title} from 'react-native-paper';
 import {API} from '../../http/API';
 import PropTypes from 'prop-types';
 import {colors} from '../../style/colors';
@@ -19,6 +19,7 @@ class CloudTraceService extends React.Component {
             showDetails: false,
             details: '',
             interval: 60 * 60,
+            loading: false,
         };
     }
 
@@ -31,12 +32,13 @@ class CloudTraceService extends React.Component {
     };
 
     setEventList = (projectID) => {
+        this.setState({loading: true});
         return this.api.CloudTraceQuery(projectID, this.state.interval)
             .then((resp) => {
-                this.setState({events: resp});
+                this.setState({events: resp, loading: false});
             }).catch((err) => {
                 console.log(err.response.data);
-                this.setState({events: []});
+                this.setState({events: [], loading: false});
             });
     };
 
@@ -89,6 +91,7 @@ class CloudTraceService extends React.Component {
                         </Dialog.Actions>
                     </Dialog>
                 </Portal>
+                <ActivityIndicator animating={this.state.loading} color={colors.green}/>
                 <ScrollView>
                     <DataTable>
                         <DataTable.Header>
